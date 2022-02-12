@@ -12,7 +12,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "prebuild": "rm -rf dist",
-    "test": "exit 0",
+    "test": "npm run lint",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "lint": "eslint src/**"
