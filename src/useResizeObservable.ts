@@ -29,9 +29,6 @@ export default function useResizeObservable(
     box: 'content-box',
   }
 ): void {
-  // Don't do anything when there's no target
-  if (!targetEl) return;
-
   const observer = useMemo(() => {
     const callback = debounceMs == undefined ? cb : debounce(cb, debounceMs);
 
@@ -49,6 +46,9 @@ export default function useResizeObservable(
   }, [cb, debounceMs]);
 
   useEffect(() => {
+    // Don't do anything when there's no target
+    if (!targetEl) return;
+
     observer.observe(targetEl, config);
     return () => {
       observer.disconnect();
