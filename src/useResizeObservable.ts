@@ -29,13 +29,21 @@ export default function useResizeObservable(
     box: 'content-box',
   }
 ): void {
-  const observer = useMemo(
-    () =>
-      new ResizeObserver(
-        debounceMs == undefined ? cb : debounce(cb, debounceMs)
-      ),
-    [cb, debounceMs]
-  );
+  const observer = useMemo(() => {
+    const callback = debounceMs == undefined ? cb : debounce(cb, debounceMs);
+
+    return new ResizeObserver((entries, observer) => {
+      // To avoid errors like: ResizeObserver loop limit exceeded
+      // we do wrap callback logic in rAF
+      window.requestAnimationFrame(() => {
+        // Don't continue when there are no observations in entries
+        if (!Array.isArray(entries) || entries.length === 0) {
+          return;
+        }
+        callback(entries, observer);
+      });
+    });
+  }, [cb, debounceMs]);
 
   useEffect(() => {
     if (targetEl) {
