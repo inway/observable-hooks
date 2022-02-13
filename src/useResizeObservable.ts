@@ -6,7 +6,7 @@ export interface ResizeObservableConfig extends ResizeObserverOptions {
    * Time in [ms] to debounce all calls.
    *
    * Please keep in mind that when using debouncing, you will only receive last
-   * resize event.
+   * resize observation entries.
    */
   debounceMs?: number;
 }
@@ -29,6 +29,9 @@ export default function useResizeObservable(
     box: 'content-box',
   }
 ): void {
+  // Don't do anything when there's no target
+  if (!targetEl) return;
+
   const observer = useMemo(() => {
     const callback = debounceMs == undefined ? cb : debounce(cb, debounceMs);
 
@@ -46,11 +49,9 @@ export default function useResizeObservable(
   }, [cb, debounceMs]);
 
   useEffect(() => {
-    if (targetEl) {
-      observer.observe(targetEl, config);
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, [targetEl, config, observer]);
+    observer.observe(targetEl, config);
+    return () => {
+      observer.disconnect();
+    };
+  }, [config, observer]);
 }
