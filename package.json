@@ -1,6 +1,6 @@
 {
   "name": "@inway/observable-hooks",
-  "version": "1.0.1-0",
+  "version": "1.0.1-1",
   "description": "Implementation of MutationObserver & ResizeObserver as React hooks",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
