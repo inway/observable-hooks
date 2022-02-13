@@ -32,20 +32,30 @@ export default function useMutationObservable(
     subtree: false,
   }
 ): void {
+  const callback = useMemo(() => debounce(cb, debounceMs), [cb, debounceMs]);
+
   const observer = useMemo(
     () =>
-      new MutationObserver(
-        debounceMs == undefined ? cb : debounce(cb, debounceMs)
-      ),
-    [cb, debounceMs]
+      new MutationObserver((entries, observer) => {
+        // This might be not needed, as I've obsevrved no issues like with
+        // ResizeObserver, but let's do it in same manner as ResizeObserver.
+        window.requestAnimationFrame(() => {
+          // Don't continue when there are no observations in entries
+          if (!Array.isArray(entries) || entries.length === 0) {
+            return;
+          }
+          callback(entries, observer);
+        });
+      }),
+    [callback]
   );
 
   useEffect(() => {
-    if (targetEl) {
-      observer.observe(targetEl, config);
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, [targetEl, config, observer]);
+    if (targetEl) observer.observe(targetEl, config);
+
+    return () => {
+      observer.disconnect();
+      callback.cancel();
+    };
+  }, [targetEl, config, observer, callback]);
 }
