@@ -2,18 +2,27 @@
   "name": "@inway/observable-hooks",
   "version": "1.0.1-2",
   "description": "Implementation of MutationObserver & ResizeObserver as React hooks",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "cjs/index.js",
+  "module": "esn/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./cjs/index.js",
+      "import": "./esm/index.js",
+      "default": "./esm/index.js"
+    }
+  },
   "homepage": "https://github.com/inway/observable-hooks",
   "repository": "https://github.com/inway/observable-hooks.git",
   "author": "Sebastian Podjasek <sebastian.podjasek@intelliway.pl>",
   "prettier": "@inway/prettier-config",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf dist",
-    "prebuild": "rm -rf dist",
+    "clean": "rm -rf build && rm -rf cjs && rm -rf esm && rm -rf types",
+    "prebuild": "rm -rf build && rm -rf cjs && rm -rf esm && rm -rf types",
     "test": "npm run lint",
-    "build": "tsc",
+    "build": "tsc -b tsconfig.esm.json tsconfig.cjs.json tsconfig.types.json",
     "build:watch": "tsc --watch",
     "lint": "eslint src/**"
   },
