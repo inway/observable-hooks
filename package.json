@@ -1,6 +1,6 @@
 {
   "name": "@inway/observable-hooks",
-  "version": "1.0.1-2",
+  "version": "1.1.0",
   "description": "Implementation of MutationObserver & ResizeObserver as React hooks",
   "main": "cjs/index.js",
   "module": "esn/index.js",
