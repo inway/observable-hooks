@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@inway/prettier-config": "^1.0.1",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.11.27",
     "@types/react": "^18.2.64",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
